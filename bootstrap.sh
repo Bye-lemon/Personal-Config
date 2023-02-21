@@ -81,7 +81,7 @@ rosDevelopmentEnv() {
 		sudo apt update
 
 		# install
-		sudo apt-get -y install ros-melodic-desktop-full
+		sudo apt-get -y install ros-noetic-desktop-full
 
 		# setup environment
 		if grep -Fxq "source /opt/ros/$(lsb_release -sc)/setup.bash" ~/.bashrc; then
