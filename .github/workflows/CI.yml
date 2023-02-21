@@ -9,12 +9,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, ubuntu-20.04]
+        os: [ubuntu-20.04, ubuntu-22.04]
 
     steps:
       - uses: actions/checkout@v1
 
       - name: help
-        run: ./bootstrap.sh -h
+        run: bash ./bootstrap.sh -h
       - name: ros
-        run: ./bootstrap.sh ros
+        run: bash ./bootstrap.sh ros
