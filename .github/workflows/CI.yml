@@ -1,0 +1,20 @@
+name: CI
+
+on: push
+
+jobs:
+  install:
+    name: Install Tools
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, ubuntu-20.04]
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: help
+        run: ./bootstrap.sh -h
+      - name: ros
+        run: ./bootstrap.sh ros
