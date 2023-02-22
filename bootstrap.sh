@@ -66,7 +66,7 @@ aptInstall() {
 	if sudo apt-get install -y $1 >/dev/null; then
 		success "Install ${1} Success"
 	else
-		fail "Install ${1} Failed"
+		error "Install ${1} Failed"
 	fi
 }
 
@@ -75,7 +75,7 @@ terminalEnv() {
 	1)
 		info "Install zsh"
 		if cmdCheck zsh -eq 0; then
-			aptInstall zsh
+			sudo apt-get install -y zsh
 		fi
 		info "Install oh-my-zsh"
 		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
