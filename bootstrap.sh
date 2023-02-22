@@ -74,8 +74,8 @@ terminalEnv() {
 	case ${1} in
 	1)
 		info "Install zsh"
-		if cmdCheck zsh -eq 0; then
-			sudo apt-get install -y zsh
+		if [cmdCheck zsh -eq 0]; then
+			aptInstall "zsh"
 		fi
 		info "Install oh-my-zsh"
 		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -83,7 +83,7 @@ terminalEnv() {
 		;;
 	2)
 		info "Install tmux"
-		if cmdCheck tmux -eq 0; then
+		if [cmdCheck tmux -eq 1]; then
 			aptInstall tmux
 		fi
 		cp config/tmux.conf ~/.tmux.conf
