@@ -74,7 +74,7 @@ terminalEnv() {
 	case ${1} in
 	1)
 		info "Install zsh"
-		if cmdCheck zsh -eq 1; then
+		if cmdCheck zsh -eq 0; then
 			aptInstall zsh
 		fi
 		info "Install oh-my-zsh"
@@ -83,7 +83,7 @@ terminalEnv() {
 		;;
 	2)
 		info "Install tmux"
-		if cmdCheck tmux -eq 1; then
+		if cmdCheck tmux -eq 0; then
 			aptInstall tmux
 		fi
 		cp config/tmux.conf ~/.tmux.conf
@@ -115,7 +115,7 @@ rosDevelopmentEnv() {
 
 		# dependencies and build
 		aptInstall "python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential"
-		if cmdCheck pip3 -eq 1; then
+		if cmdCheck pip3 -eq 0; then
 			aptInstall "python3-pip"
 		fi
 		sudo pip3 install 6-rosdep
