@@ -103,7 +103,7 @@ rosDevelopmentEnv() {
 		# install
 		declare -A ros_mapping
 		ros_mapping=(["bionic"]="melodic" ["focal"]="noetic")
-		sudo apt-get -y install ros-${ros_mapping[$(lsb_release -sc)]}-desktop-full
+		aptInstall ros-${ros_mapping[$(lsb_release -sc)]}-desktop-full
 
 		# setup environment
 		if grep -Fxq "source /opt/ros/$(lsb_release -sc)/setup.zsh" ~/.zshrc; then
