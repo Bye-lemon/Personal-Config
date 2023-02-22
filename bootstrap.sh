@@ -74,7 +74,7 @@ terminalEnv() {
 	case ${1} in
 	1)
 		info "Install zsh"
-		if [cmdCheck zsh -eq 0]; then
+		if [ cmdCheck zsh -eq 1 ]; then
 			aptInstall "zsh"
 		fi
 		info "Install oh-my-zsh"
@@ -83,7 +83,7 @@ terminalEnv() {
 		;;
 	2)
 		info "Install tmux"
-		if [cmdCheck tmux -eq 1]; then
+		if [ cmdCheck tmux -eq 1 ]; then
 			aptInstall tmux
 		fi
 		cp config/tmux.conf ~/.tmux.conf
