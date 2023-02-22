@@ -113,12 +113,12 @@ rosDevelopmentEnv() {
 		aptInstall ros-${ros_mapping[$(lsb_release -sc)]}-desktop-full
 
 		# setup environment
-		if grep -Fxq "source /opt/ros/$(lsb_release -sc)/setup.zsh" ~/.zshrc; then
-			info "ROS already setup in ~/.zshrc"
+		if grep -Fxq "source /opt/ros/$(lsb_release -sc)/setup.bash" ~/.bashrc; then
+			info "ROS already setup in ~/.bashrc"
 		else
-			sh -c 'echo "source /opt/ros/$(lsb_release -sc)/setup.zsh" >> ~/.zshrc';
+			sh -c 'echo "source /opt/ros/$(lsb_release -sc)/setup.bash" >> ~/.bashrc';
 		fi
-		source ~/.zshrc
+		source ~/.bashrc
 
 		# dependencies and build
 		aptInstall "python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential"
@@ -143,12 +143,11 @@ rosDevelopmentEnv() {
 		aptInstall "python3-argcomplete ros-dev-tools"
 
 		# setup environment
-		if grep -Fxq "source /opt/ros/$(lsb_release -sc)/setup.zsh" ~/.zshrc; then
-			info "ROS already setup in ~/.zshrc"
+		if grep -Fxq "source /opt/ros/$(lsb_release -sc)/setup.bash" ~/.bashrc; then
+			info "ROS already setup in ~/.bashrc"
 		else
-			sh -c 'echo "source /opt/ros/$(lsb_release -sc)/setup.zsh" >> ~/.zshrc';
+			sh -c 'echo "source /opt/ros/$(lsb_release -sc)/setup.bash" >> ~/.bashrc';
 		fi
-		source ~/.zshrc
 		;;
 	esac
 }
