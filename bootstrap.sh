@@ -47,7 +47,13 @@ warn() {
 
 error() {
 	msg "${Red}[✘]${Color_off} ${1}${2}"
+	exit 1
 }
+
+fail() {
+	msg "${Red}[✘]${Color_off} ${1}${2}"
+}
+
 success() {
 	msg "${Green}[✔]${Color_off} ${1}${2}"
 }
@@ -66,7 +72,7 @@ aptInstall() {
 	if sudo apt-get install -y $1 >/dev/null; then
 		success "Install ${1} Success"
 	else
-		error "Install ${1} Failed"
+		fail "Install ${1} Failed"
 	fi
 }
 
@@ -74,18 +80,20 @@ terminalEnv() {
 	case ${1} in
 	1)
 		info "Install zsh"
-		if [ cmdCheck zsh -eq 1 ]; then
-			aptInstall "zsh"
+		if ! hash zsh &>/dev/null; then
+			aptInstall zsh
 		fi
+		cmdCheck zsh
 		info "Install oh-my-zsh"
 		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 		chsh -s $(which zsh)
 		;;
 	2)
 		info "Install tmux"
-		if [ cmdCheck tmux -eq 1 ]; then
+		if ! hash tmux &>/dev/null; then
 			aptInstall tmux
 		fi
+		cmdCheck tmux
 		cp config/tmux.conf ~/.tmux.conf
 		;;
 	esac
