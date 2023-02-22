@@ -19,4 +19,4 @@ jobs:
       - name: terminal
         run: bash ./bootstrap.sh terminal
       - name: ros
-        run: bash ./bootstrap.sh ros
+        run: zsh ./bootstrap.sh ros
