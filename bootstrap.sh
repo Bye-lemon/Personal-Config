@@ -62,8 +62,8 @@ success() {
 cmdCheck() {
 	if ! hash $1 &>/dev/null; then
 		error "Command [${1}] not found"
-		return 1
 	fi
+	info "Command [${1}] exist"
 }
 
 aptInstall() {
@@ -79,14 +79,13 @@ aptInstall() {
 terminalEnv() {
 	case ${1} in
 	1)
-		info "Install zsh"
 		if ! hash zsh &>/dev/null; then
 			aptInstall zsh
 		fi
 		cmdCheck zsh
 		info "Install oh-my-zsh"
 		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-		chsh -s $(which zsh)
+		sudo chsh -s $(which zsh)
 		;;
 	2)
 		info "Install tmux"
@@ -133,7 +132,23 @@ rosDevelopmentEnv() {
 		;;
 	2)
 		# Install ROS 2
-		error "Not support ROS 2"
+		aptInstall "curl gnupg2"
+		sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+		sh -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] https://mirrors.tuna.tsinghua.edu.cn/ros2/ubuntu $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null'
+		sudo apt update
+
+		declare -A ros2_mapping
+		ros2_mapping=(["focal"]="foxy" ["jammy"]="humble")
+		aptInstall ros-${ros2_mapping[$(lsb_release -sc)]}-desktop
+		aptInstall "python3-argcomplete ros-dev-tools"
+
+		# setup environment
+		if grep -Fxq "source /opt/ros/$(lsb_release -sc)/setup.zsh" ~/.zshrc; then
+			info "ROS already setup in ~/.zshrc"
+		else
+			sh -c 'echo "source /opt/ros/$(lsb_release -sc)/setup.zsh" >> ~/.zshrc';
+		fi
+		source ~/.zshrc
 		;;
 	esac
 }
@@ -168,7 +183,11 @@ main() {
 		case $@ in
 		
 		"ros")
-			rosDevelopmentEnv 1
+			if [ $(lsb_release -sc) == "jammy" ]; then
+				rosDevelopmentEnv 2
+			else
+				rosDevelopmentEnv 1
+			fi
 			;;
 		"ros ros1")
 			rosDevelopmentEnv 1
