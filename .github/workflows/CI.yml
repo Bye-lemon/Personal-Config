@@ -16,5 +16,7 @@ jobs:
 
       - name: help
         run: bash ./bootstrap.sh -h
+      - name: terminal
+        run: bash ./bootstrap.sh terminal
       - name: ros
         run: bash ./bootstrap.sh ros

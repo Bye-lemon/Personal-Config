@@ -71,6 +71,27 @@ aptInstall() {
 	fi
 }
 
+terminalEnv() {
+	case ${1} in
+	1)
+		info "Install zsh"
+		if cmdCheck zsh -eq 0; then
+			aptInstall zsh
+		fi
+		info "Install oh-my-zsh"
+		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+		chsh -s $(which zsh)
+		;;
+	2)
+		info "Install tmux"
+		if cmdCheck tmux -eq 0; then
+			aptInstall tmux
+		fi
+		cp config/tmux.conf ~/.tmux.conf
+		;;
+	esac
+}
+
 rosDevelopmentEnv() {
 	case ${1} in
 	# Install ROS
@@ -81,15 +102,17 @@ rosDevelopmentEnv() {
 		sudo apt update
 
 		# install
-		sudo apt-get -y install ros-noetic-desktop-full
+		declare -A ros_mapping
+		ros_mapping=(["bionic"]="melodic" ["focal"]="noetic")
+		sudo apt-get -y install ros-${ros_mapping[$(lsb_release -sc)]}-desktop-full
 
 		# setup environment
-		if grep -Fxq "source /opt/ros/$(lsb_release -sc)/setup.bash" ~/.bashrc; then
-			info "ROS already setup in ~/.bashrc"
+		if grep -Fxq "source /opt/ros/$(lsb_release -sc)/setup.zsh" ~/.zshrc; then
+			info "ROS already setup in ~/.zshrc"
 		else
-			sh -c 'echo "source /opt/ros/$(lsb_release -sc)/setup.bash" >> ~/.bashrc';
+			sh -c 'echo "source /opt/ros/$(lsb_release -sc)/setup.zsh" >> ~/.zshrc';
 		fi
-		source ~/.bashrc
+		source ~/.zshrc
 
 		# dependencies and build
 		aptInstall "python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential"
@@ -114,8 +137,8 @@ help() {
 	echo "TYPE and TARGET"
 	echo
 	echo "[ros]"
-	echo "	ros1: a delightful, open source, community-driven framework for managing your Zsh configuration."
-	echo "	ros2: Configure ~/.zshrc: Powerlevel10k;Plugins:extract/sudo/zsh-syntax-highlighting/z"
+	echo "	ros1: "
+	echo "	ros2: "
 	echo
 	echo "OPTIONS"
 	echo
@@ -145,6 +168,16 @@ main() {
 			;;
 		"ros ros2")
 			rosDevelopmentEnv 2
+			;;
+		"terminal")
+			terminalEnv 1
+			terminalEnv 2
+			;;
+		"terminal zsh")
+			terminalEnv 1
+			;;
+		"terminal tmux")
+			terminalEnv 2
 			;;
 		--version | -v)
 			echo "Version: ${VERSION}"
