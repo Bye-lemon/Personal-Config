@@ -16,10 +16,10 @@ jobs:
 
       - name: help
         run: bash ./bootstrap.sh -h
-      - name: asdf
-        run: bash ./bootstrap.sh dev
       - name: terminal
         run: bash ./bootstrap.sh terminal
+      - name: asdf
+        run: bash ./bootstrap.sh dev
       - name: ros
         run: bash ./bootstrap.sh ros
       - name: docker
