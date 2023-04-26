@@ -89,6 +89,7 @@ terminalEnv() {
 		sudo chsh -s $(which zsh)
 		cp config/.alias ~/.alias
 		cp config/.zshrc ~/.zshrc
+		source ~/.zshrc
 		git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
 		ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
 		git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
@@ -171,6 +172,24 @@ publicDevelopmentEnv() {
 		make -j$(nproc)
 		sudo make install
 		;;
+	# Install Docker
+	2)
+		# Remove Old Version of Docker
+		sudo apt-get remove docker docker-engine docker.io containerd runc
+		# Install Dependencies
+		aptInstall "apt-transport-https ca-certificates curl gnupg lsb-release"
+		# Add Docker's Official GPG Key & Source
+		sudo install -m 0755 -d /etc/apt/keyrings
+		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+		sudo chmod a+r /etc/apt/keyrings/docker.gpg
+		echo \
+			"deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+			"$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+			sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+		# Install Docker Engine
+		sudo apt-get update
+		aptInstall "docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin"
+		;;
 	esac
 }
 
@@ -227,6 +246,9 @@ main() {
 			;;
 		"cmake")
 			publicDevelopmentEnv 1
+			;;
+		"docker")
+			publicDevelopmentEnv 2
 			;;
 		--version | -v)
 			echo "Version: ${VERSION}"

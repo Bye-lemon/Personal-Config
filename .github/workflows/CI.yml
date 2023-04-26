@@ -22,3 +22,5 @@ jobs:
         run: bash ./bootstrap.sh terminal
       - name: ros
         run: bash ./bootstrap.sh ros
+      - name: docker
+        run: bash ./bootstrap.sh docker
