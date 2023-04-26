@@ -19,7 +19,7 @@ jobs:
       - name: terminal
         run: bash ./bootstrap.sh terminal
       - name: asdf
-        run: zsh ./bootstrap.sh dev
+        run: bash ./bootstrap.sh dev
       - name: ros
         run: bash ./bootstrap.sh ros
       - name: docker
