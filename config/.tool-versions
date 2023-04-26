@@ -1,6 +1,6 @@
 cmake latest
 ninja latest
-python 3.10
+python 3.10.11
 pdm latest
 golang 1.14
 nodejs 19.6.0
