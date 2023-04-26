@@ -177,7 +177,7 @@ publicDevelopmentEnv() {
 		# Remove Old Version of Docker
 		sudo apt-get remove docker docker-engine docker.io containerd runc
 		# Install Dependencies
-		aptInstall "apt-transport-https ca-certificates curl gnupg lsb-release"
+		aptInstall "ca-certificates curl gnupg"
 		# Add Docker's Official GPG Key & Source
 		sudo install -m 0755 -d /etc/apt/keyrings
 		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
@@ -191,6 +191,26 @@ publicDevelopmentEnv() {
 		aptInstall "docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin"
 		;;
 	esac
+}
+
+asdfDefinitionEnv() {
+	# Install asdf
+	git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.3
+	# Install Dependencies
+	aptInstall "coreutils"
+	# Add asdf plugins
+	asdf plugin add cmake https://github.com/asdf-community/asdf-cmake.git
+	asdf plugin-add ninja https://github.com/asdf-community/asdf-ninja.git
+	asdf plugin add python https://github.com/asdf-community/asdf-python.git
+	asdf plugin add pdm https://github.com/1oglop1/asdf-pdm.git
+	asdf plugin-add golang https://github.com/kennyp/asdf-golang.git
+	asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+	asdf plugin add rust https://github.com/asdf-community/asdf-rust.git
+	asdf plugin add java https://github.com/halcyon/asdf-java.git
+	# Install package
+	asdf install
+	# Setup environment
+	mkdir $ZSH_CUSTOM/plugins/pdm && pdm completion zsh > $ZSH_CUSTOM/plugins/pdm/_pdm
 }
 
 help() {
@@ -244,8 +264,8 @@ main() {
 		"terminal tmux")
 			terminalEnv 2
 			;;
-		"cmake")
-			publicDevelopmentEnv 1
+		"dev")
+			asdfDefinitionEnv
 			;;
 		"docker")
 			publicDevelopmentEnv 2
