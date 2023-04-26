@@ -16,6 +16,8 @@ jobs:
 
       - name: help
         run: bash ./bootstrap.sh -h
+      - name: cmake
+        run: bash ./bootstrap.sh cmake
       - name: terminal
         run: bash ./bootstrap.sh terminal
       - name: ros

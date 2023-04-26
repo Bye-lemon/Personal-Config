@@ -1,0 +1,15 @@
+alias ..="cd .."
+alias ...="cd ../.."
+alias rm='trash-put'
+alias mv='mv -i'
+alias cp='cp -i'
+alias grep='grep -E'
+alias ag='ag --color-match "1;31"'
+alias vi='nvim'
+alias gcc="gcc -Wall"
+alias g++="g++ -Wall -std=c++11"
+alias tat="tmux attach-session -t"
+alias sudo="sudo -E"
+alias py="python3"
+alias av="source venv/bin/activate"
+alias cat='batcat'

@@ -78,6 +78,7 @@ aptInstall() {
 
 terminalEnv() {
 	case ${1} in
+	# Install and Configure zsh
 	1)
 		if ! hash zsh &>/dev/null; then
 			aptInstall zsh
@@ -86,7 +87,15 @@ terminalEnv() {
 		info "Install oh-my-zsh"
 		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 		sudo chsh -s $(which zsh)
+		cp config/.alias ~/.alias
+		cp config/.zshrc ~/.zshrc
+		git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
+		ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+		git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+		git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions
+		git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 		;;
+	# Install and Configure tmux
 	2)
 		info "Install tmux"
 		if ! hash tmux &>/dev/null; then
@@ -152,6 +161,19 @@ rosDevelopmentEnv() {
 	esac
 }
 
+publicDevelopmentEnv() {
+	case ${1} in
+	# Complile and Install Cmake
+	1)
+		git clone https://github.com/Kitware/CMake ~/CMake
+		cd ~/CMake
+		./bootstrap
+		make -j$(nproc)
+		sudo make install
+		;;
+	esac
+}
+
 help() {
 	echo "Usage: bash bootstrap.sh [type] [target] [options]"
 	echo
@@ -180,7 +202,6 @@ main() {
 		cmdCheck git
 	else
 		case $@ in
-		
 		"ros")
 			if [ $(lsb_release -sc) == "jammy" ]; then
 				rosDevelopmentEnv 2
@@ -203,6 +224,9 @@ main() {
 			;;
 		"terminal tmux")
 			terminalEnv 2
+			;;
+		"cmake")
+			publicDevelopmentEnv 1
 			;;
 		--version | -v)
 			echo "Version: ${VERSION}"
