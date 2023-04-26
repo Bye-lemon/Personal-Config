@@ -197,8 +197,6 @@ asdfDefinitionEnv() {
 	# Install asdf
 	git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.3
 	. "$HOME/.asdf/asdf.sh"
-	# Install Dependencies
-	aptInstall "coreutils"
 	# Add asdf plugins
 	asdf plugin add cmake https://github.com/asdf-community/asdf-cmake.git
 	asdf plugin-add ninja https://github.com/asdf-community/asdf-ninja.git
@@ -209,9 +207,8 @@ asdfDefinitionEnv() {
 	asdf plugin add rust https://github.com/asdf-community/asdf-rust.git
 	asdf plugin add java https://github.com/halcyon/asdf-java.git
 	# Install package
+	cp config/.tool-versions ~/.tool-versions
 	asdf install
-	# Setup environment
-	mkdir $ZSH_CUSTOM/plugins/pdm && pdm completion zsh > $ZSH_CUSTOM/plugins/pdm/_pdm
 }
 
 help() {
