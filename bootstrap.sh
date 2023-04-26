@@ -164,16 +164,8 @@ rosDevelopmentEnv() {
 
 publicDevelopmentEnv() {
 	case ${1} in
-	# Complile and Install Cmake
-	1)
-		git clone https://github.com/Kitware/CMake ~/CMake
-		cd ~/CMake
-		./bootstrap
-		make -j$(nproc)
-		sudo make install
-		;;
 	# Install Docker
-	2)
+	1)
 		# Remove Old Version of Docker
 		sudo apt-get remove docker docker-engine docker.io containerd runc
 		# Install Dependencies
@@ -266,7 +258,7 @@ main() {
 			asdfDefinitionEnv
 			;;
 		"docker")
-			publicDevelopmentEnv 2
+			publicDevelopmentEnv 1
 			;;
 		--version | -v)
 			echo "Version: ${VERSION}"
