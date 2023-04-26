@@ -196,8 +196,7 @@ publicDevelopmentEnv() {
 asdfDefinitionEnv() {
 	# Install asdf
 	git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.3
-	sh -c 'echo ". '$HOME/.asdf/asdf.sh'" >> ~/.bashrc'
-	source ~/.bashrc
+	. "$HOME/.asdf/asdf.sh"
 	# Install Dependencies
 	aptInstall "coreutils"
 	# Add asdf plugins
