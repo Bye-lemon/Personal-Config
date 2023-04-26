@@ -2,7 +2,7 @@ cmake latest
 ninja latest
 python 3.11
 pdm latest
-go 1.14
+golang 1.14
 nodejs 19.6.0
 rust 1.67.1
 java openjdk-19
