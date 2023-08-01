@@ -8,7 +8,9 @@ alias ag='ag --color-match "1;31"'
 alias vi='nvim'
 alias gcc="gcc -Wall"
 alias g++="g++ -Wall -std=c++11"
+alias tmux="tmux -u"
 alias tat="tmux attach-session -t"
+alias tad="tmux attach-session -d -t"
 alias sudo="sudo -E"
 alias py="python3"
 alias av="source venv/bin/activate"
